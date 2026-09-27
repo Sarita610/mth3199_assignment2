@@ -23,8 +23,8 @@ function strandbeest_simulation()
     axis([-160, 60, -160, 60]);
 
     title('Strandbeest Simulation', 'Interpreter', 'latex', 'FontSize', 20);
-    xlabel('$x$ displacement (-)', 'Interpreter', 'latex', 'FontSize', 16);
-    ylabel('$y$ displacement (-)', 'Interpreter', 'latex', 'FontSize', 16);
+    xlabel('$x$ position (-)', 'Interpreter', 'latex', 'FontSize', 16);
+    ylabel('$y$ position (-)', 'Interpreter', 'latex', 'FontSize', 16);
 
     tvertex = 7;
     tx = 2*tvertex - 1;
