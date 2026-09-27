@@ -48,7 +48,7 @@ function [x, exit_flag] = multi_newton_solver(fun,x_guess,solver_params)
     end
     
     x=x_guess;
-    exit_flag = 0;
+    exit_flag =
 
      for N=1:max_iter
 
@@ -59,33 +59,49 @@ function [x, exit_flag] = multi_newton_solver(fun,x_guess,solver_params)
             [f_val, J] = fun(x);
         end
 
-        if abs(det(J*J'))< 1e-14
-            exit_flag = -1;
-            break
-        end
-
         dx = J\f_val;
         x_next = x-dx;
 
-        if norm(x_next-x)>dxmax
-            exit_flag=-2;
-            break 
-        end
-
-
-        if norm(f_val)<ftol
-            x = x_next;
-            exit_flag=1;
-            break 
-        end
-
-        if norm(x_next-x) < dxmin
-            x = x_next;
-            exit_flag = 1;
+        if abs(x_next-x) < dxmin
             break
         end
 
+        if abs(fun(x))<ftol
+            break 
+        end
 
-        x= x_next;
+        if abs(x_next-x)>dxmax
+            break 
+        end
+
+        if det(J*J')< 1e-14
+            break
+        end
+        x=x_next;
      end
+end
+
+function x = multi_newton(fun, x0, max_iter, ftol, dxtol, dxmax)
+
+    for N=1:max_iter
+
+        [f_val, J] = fun(x0);
+        dx = J\f_val;
+        x_next = x0-dx;
+
+        if norm(dx) < dxtol
+            break
+        end
+
+        if norm(f_val)<ftol
+            break
+        end
+
+        if det(J*J')< 1e-14
+            break
+        end
+        
+        x0 = x_next;
+    end
+    x=x0;
 end

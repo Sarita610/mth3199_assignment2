@@ -1,8 +1,47 @@
-x = [1; 2; 3];
-[f_val, J] = test_function01(x)
-newt = J\f_val
+function x = multi_newton(fun, x0, max_iter, ftol, dxtol, dxmax)
 
-[f_newt, J_newt] = test_function01(newt)
+    for N=1:max_iter
 
+        [f_val, J] = fun(x0);
+        dx = J\f_val;
+        x_next = x0-dx;
 
+        if norm(dx) < dxtol
+            break
+        end
 
+        if norm(f_val)<ftol
+            break
+        end
+
+        if d
+        x0 = x_next;
+    end
+    x=x0;
+end
+
+function x = newton_solver(fun,x0, max_iter, ftol, dxtol, dxmax)
+
+    for N = 1:max_iter
+        
+        [fun_x0, dif_fun_x0] = fun(x0);
+
+        x_next = x0 - (fun_x0 / dif_fun_x0);
+
+        if (abs(fun_x0) < ftol)
+            break
+        end
+        if (abs(x_next - x0) < dxtol)
+            break
+        end
+        if (abs(x_next - x0) > dxmax)
+            break
+        end
+
+        x0 = x_next;
+
+    end 
+    
+    x = x0;
+
+end
