@@ -1,0 +1,101 @@
+%Runs the Strandbeest linkage simulation: solves for the linkage shape as
+%the crank rotates through several full cycles, animates the result,
+%overlays the leg-tip's path, and saves the animation to a video file
+function strandbeest_simulation()
+
+    leg_params = define_leg_parameters();
+
+    %column vector of initial guesses for each vertex location.
+    %in form: [x1;y1;x2;y2;...;xn;yn]
+    vertex_coords_guess = [...
+        [   0;  50];... %vertex 1 guess
+        [ -50;   0];... %vertex 2 guess
+        [ -50;  50];... %vertex 3 guess
+        [-100;   0];... %vertex 4 guess
+        [-100; -50];... %vertex 5 guess
+        [ -50; -50];... %vertex 6 guess
+        [ -50;-100]...  %vertex 7 guess
+    ];
+
+    tvertex = 7;
+    tx = 2*tvertex - 1;
+    ty = 2*tvertex;
+
+    vid = 'strandbeest_animation.avi';
+    writer_obj = VideoWriter(vid);
+    open(writer_obj);
+
+    fig = figure(1);
+    axis equal;
+    hold on;
+    axis([-160, 60, -160, 60]);
+
+    path = plot(nan, nan, 'r--', 'linewidth', 1);
+    tip_path_x = [];
+    tip_path_y = [];
+
+    %initialize all the link/vertex/crank plot objects
+    leg_drawing = initialize_leg_drawing(leg_params);
+
+    %TODO: re-enable once compute_velocities.m is written -- the velocity
+    %arrow needs it, and calling it before then will error out
+    show_velocity_arrow = false;
+    if show_velocity_arrow
+        %add a quiver arrow object to show the leg-tip velocity vector
+        leg_drawing = add_velocity_arrow(leg_drawing);
+    end
+
+    %scale factor so the velocity arrow is visible but not huge;
+    %tune this by eye once you see the animation
+    vel_scale = 0.5;
+
+    %---------------------------------------------------------------
+    %animation loop: run the crank through several full rotations,
+    %recording the tip's path during the first rotation only
+    %---------------------------------------------------------------
+    num_rotations = 3;
+    theta_values = linspace(0, num_rotations*2*pi, 600);
+
+    %wrap the whole loop in try/catch so the video writer always gets
+    %closed properly, even if something errors partway through -- an
+    %unclosed VideoWriter produces an invalid, unplayable file, which
+    %would otherwise force you to redo every frame computed so far
+    vertex_coords = vertex_coords_guess;
+    try
+        for i = 1:length(theta_values)
+
+            theta = theta_values(i);
+
+            %solve for the legal vertex configuration at this crank angle,
+            %seeding the solver with the previous solution
+            vertex_coords = compute_coords(vertex_coords, leg_params, theta);
+
+            %update the link/vertex/crank drawing for this configuration
+            update_leg_drawing(vertex_coords, leg_drawing, leg_params);
+
+            %build up the tip path as we go, during the first rotation;
+            %after that, leave it as a static trace of one full cycle
+            if theta <= 2*pi
+                tip_path_x(end+1) = vertex_coords(tx); %#ok<AGROW>
+                tip_path_y(end+1) = vertex_coords(ty); %#ok<AGROW>
+                set(path, 'xdata', tip_path_x, 'ydata', tip_path_y);
+            end
+
+            if show_velocity_arrow
+                %update the leg-tip velocity arrow overlay
+                update_velocity_arrow(vertex_coords, leg_params, theta, leg_drawing, vel_scale);
+            end
+
+            drawnow;
+
+            current_frame = getframe(fig);
+            writeVideo(writer_obj, current_frame);
+        end
+    catch error_info
+        close(writer_obj);
+        rethrow(error_info);
+    end
+
+    close(writer_obj);
+
+end
