@@ -45,20 +45,16 @@ function plot_legtipvelocities
     hold on;
     plot(theta_val, dx_tip_analytical, 'g', 'LineWidth', 3)
     plot(theta_val, dx_tip_numerical, 'k--', 'LineWidth', 3)
-    title('Rate of Change of Leg Tip x-Position with Crank Angle $\theta$', 'Interpreter', 'latex', 'FontSize', 20)
-    xlabel('Crank Angle $\theta$ (rad)', 'Interpreter', 'latex', 'FontSize', 16)
-    ylabel('$dx_{tip}/d\theta$ (-)','Interpreter', 'latex', 'FontSize', 16)
-    legend('Analytical', 'Numerical', 'Interpreter', 'latex', 'location', 'southeast', 'Fontsize', 16)
+    title('Rate of Change of Leg Tip x-Pos of Strandbeest for Crank Angle $\theta$', 'Interpreter', 'latex', 'FontSize', 20)
+    xlabel('Crank Angle $\theta$ (rad)', 'Interpreter', 'latex')
+    ylabel('$dx_{tip}/d\theta$ (-)','Interpreter', 'latex')
 
     %Plot 2
     figure(2);
     hold on;
     plot(theta_val, dy_tip_analytical, 'g', 'LineWidth', 3)
     plot(theta_val, dy_tip_numerical, 'k--', 'LineWidth', 3)
-    title('Rate of Change of Leg Tip y-Position with Crank Angle $\theta$', 'Interpreter', 'latex', 'FontSize', 20)
-    xlabel('Crank Angle $\theta$ (rad)', 'Interpreter', 'latex', 'FontSize', 16)
-    ylabel('$dy_{tip}/d\theta$ (-)','Interpreter', 'latex', 'FontSize', 16)
-    legend('Analytical', 'Numerical', 'Interpreter', 'latex', 'location', 'southeast', 'Fontsize', 16)
+    title('Change in y-value of Strandbeest for Motor $\theta$')
 
     xlim([0 2*pi]);
 

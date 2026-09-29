@@ -30,7 +30,7 @@ for i = 1:length(theta_val)
     
     
 
-    dx_tip_numerical(i) = numerical_computation(tx)
+    dx_tip_numerical(i) = numerical_computation(tx);
     dy_tip_numerical(i) = numerical_computation(ty);
 end
 
