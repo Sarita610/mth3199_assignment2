@@ -10,8 +10,7 @@
 
 %OUTPUTS:
 %   f_out: a 2-element column vector, the (x,y) difference between the
-%       target and projectiles positions at time t.Projectile hits target
-%       at root f_out = [0,0].
+%       target and projectiles positions at time t.Projectile hits ta
 %    
 function f_out = hit_target(x)
     theta = x(1);
