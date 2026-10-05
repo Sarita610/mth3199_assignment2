@@ -48,7 +48,8 @@ function plot_legtipvelocities
     title('Rate of Change of Leg Tip x-Position with Crank Angle $\theta$', 'Interpreter', 'latex', 'FontSize', 20)
     xlabel('Crank Angle $\theta$ (rad)', 'Interpreter', 'latex', 'FontSize', 16)
     ylabel('$dx_{tip}/d\theta$ (-)','Interpreter', 'latex', 'FontSize', 16)
-    legend('Analytical', 'Numerical', 'Interpreter', 'latex', 'location', 'southeast', 'Fontsize', 16)
+    legend('Implicit Method (Linear Algebra)', 'Direct Method (Finite Difference)', 'Interpreter', 'latex', 'location', 'north', 'Fontsize', 16)
+    xlim([0 2*pi]);
 
     %Plot 2
     figure(2);
@@ -58,9 +59,10 @@ function plot_legtipvelocities
     title('Rate of Change of Leg Tip y-Position with Crank Angle $\theta$', 'Interpreter', 'latex', 'FontSize', 20)
     xlabel('Crank Angle $\theta$ (rad)', 'Interpreter', 'latex', 'FontSize', 16)
     ylabel('$dy_{tip}/d\theta$ (-)','Interpreter', 'latex', 'FontSize', 16)
-    legend('Analytical', 'Numerical', 'Interpreter', 'latex', 'location', 'southeast', 'Fontsize', 16)
+    legend('Implicit Method (Linear Algebra)', 'Direct Method (Finite Difference)', 'Interpreter', 'latex', 'location', 'southwest', 'Fontsize', 14)
 
     xlim([0 2*pi]);
+    
 
    
 
